@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run" type="Application" factoryName="Application">
+    <envs>
+      <env name="JDK_JAVA_OPTIONS" value="--enable-native-access=javafx.graphics" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.falkknudsen.regless.Launcher" />
+    <module name="Regless" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.falkknudsen.regless.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
