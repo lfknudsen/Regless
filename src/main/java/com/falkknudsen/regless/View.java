@@ -1,32 +1,33 @@
 package com.falkknudsen.regless;
 
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
 
-import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class View {
     private Stage stage;
     private Model model;
 
+    private Pattern pattern;
+    private Matcher matcher;
+
     public View(Stage stage, Model model) {
         this.stage = stage;
         this.model = model;
 
-        HTMLEditor regexBox = NewHTMLEditor();
-        HTMLEditor matchText = NewHTMLEditor();
+        Editor regexText = new Editor();
+        Editor matchText = new Editor();
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
-        //regexBox.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
-        //matchText.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
-        root.getChildren().addAll(regexBox, matchText);
-        regexBox.setOnKeyReleased(event -> {
-            System.out.println(regexBox.getHtmlText());
-        });
+        root.getChildren().addAll(regexText, matchText);
+        regexText.setOnKeyReleased(_ -> UpdatePattern(regexText.GetText()));
+        matchText.setOnKeyReleased(_ -> UpdateMatcher(matchText.GetText()));
 
         Scene scene = new Scene(root, 1280, 720);
         stage.setTitle("Hello!");
@@ -34,13 +35,18 @@ public class View {
         stage.show();
     }
 
-    private static HTMLEditor NewHTMLEditor() {
-        HTMLEditor result = new HTMLEditor();
-        Set<Node> nodes = result.lookupAll(".tool-bar");
-        for (Node node : nodes) {
-            node.setVisible(false);
-            node.setManaged(false);
+    private void UpdatePattern(String regex) {
+        try {
+            pattern = Pattern.compile(regex);
+        } catch (PatternSyntaxException e) {
+            pattern = null;
         }
-        return result;
+    }
+
+    private void UpdateMatcher(String match) {
+        matcher = pattern.matcher(match);
+        if (matcher.find()) {
+            System.out.println("Match found!!");
+        }
     }
 }
