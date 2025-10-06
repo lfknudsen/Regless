@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run" type="Application" factoryName="Application">
     <envs>
-      <env name="JDK_JAVA_OPTIONS" value="--enable-native-access=javafx.graphics" />
+      <env name="JDK_JAVA_OPTIONS" value="--enable-native-access=ALL-UNNAMED,javafx.graphics,javafx.web" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="com.falkknudsen.regless.Launcher" />
     <module name="Regless" />
