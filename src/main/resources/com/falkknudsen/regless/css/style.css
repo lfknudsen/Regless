@@ -1,0 +1,49 @@
+.button {
+    -fx-background-color: #FFF;
+    -fx-background-radius: 15px / 20px;
+    -fx-border-color: #CFCFCF;
+    -fx-border-radius: 15px / 20px;
+    -fx-text-fill: #333333;
+}
+
+.button:hover {
+    -fx-border-color: pink;
+    -fx-effect: dropshadow(two-pass-box, pink, 2.25, 0.5, 0, 0);
+}
+
+.button:focused {
+    -fx-border-color: #CFCFCF;
+}
+
+.button:pressed {
+    -fx-background-color: #ffe9e9;
+    -fx-border-color: pink;
+}
+
+.html-editor {
+    -fx-padding: 5;
+    -fx-background-color: #FFF;
+    -fx-border-color: #CFCFCF;
+    -fx-text-fill: #333333;
+    -fx-border-radius: 10px / 20px;
+    -fx-background-radius: 10px / 20px;
+}
+
+.html-editor:hover {
+    -fx-border-color: pink;
+    -fx-effect: dropshadow(two-pass-box, pink, 2.25, 0.5, 0, 0);
+}
+
+.html-editor:focused {
+    -fx-border-color: pink;
+    -fx-effect: dropshadow(three-pass-box, pink, 6, 0.5, 0, 0);
+}
+
+#root {
+    -fx-background-color: #e5e5e5;
+}
+
+.label {
+    -fx-text-fill: #344f71;
+    -fx-font-family: Cambria;
+}

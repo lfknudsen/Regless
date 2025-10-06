@@ -3,9 +3,9 @@ package com.falkknudsen.regless;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.NullUnmarked;
@@ -14,6 +14,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import static com.falkknudsen.regless.ResourceLoader.loadStylesheet;
+
 public class View {
     private Stage stage;
     private Model model;
@@ -21,21 +23,30 @@ public class View {
     private Pattern pattern;
     private Matcher matcher;
 
+    public final static double UI_PADDING = 9.0;
+    public final static float DEFAULT_BOX_SPACING = 10f;
+
+    public final static double WINDOW_WIDTH = 800;
+    public final static double WINDOW_HEIGHT = 800;
+
     public View(Stage stage, Model model) {
         this.stage = stage;
         this.model = model;
 
+        Label regexLabel = new Label("Regular Expression:");
+        regexLabel.setVisible(true);
+        HBox hRegexLabel = new HBox(regexLabel);
+        hRegexLabel.setAlignment(Pos.BOTTOM_LEFT);
+        Label matchLabel = new Label("Test String:");
+        matchLabel.setVisible(true);
+        HBox hMatchLabel = new HBox(matchLabel);
+        hMatchLabel.setAlignment(Pos.BOTTOM_LEFT);
+
         Editor matchText = new Editor();
-        Editor highlight = new Editor();
-        highlight.setBackground(
-                new Background(
-                new BackgroundFill(
-                        new Color(1, 0, 0, 1), null, null)));
-        var matchPane = new StackPane();
-        matchPane.setAlignment(Pos.CENTER);
-        matchPane.getChildren().addAll(matchText);//, highlight);
+        matchText.setPrefHeight(UI_PADDING * 15);
 
         Editor regexText = new Editor();
+        regexText.setPrefHeight(UI_PADDING * 10);
         Button regexButton = new Button("Match");
         regexButton.setOnAction(e -> {
             UpdatePattern(regexText.GetText());
@@ -43,14 +54,21 @@ public class View {
             matchText.Format(matcher);
         });
 
-        HBox regexPane = new HBox();
-        regexPane.setAlignment(Pos.CENTER);
-        regexPane.getChildren().addAll(regexText, regexButton);
+        regexText.setPrefWidth(WINDOW_WIDTH / 2 - UI_PADDING * 2);
+        matchText.setPrefWidth(regexText.getPrefWidth() + regexButton.getPrefWidth() + DEFAULT_BOX_SPACING);
+        StackPane matchPane = new StackPane();
+        matchPane.setAlignment(Pos.CENTER);
+        matchPane.getChildren().addAll(matchText);
+        VBox vMatchPane = new VBox(0.0, hMatchLabel, matchPane);
 
-        VBox root = new VBox();
-        root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(regexPane, matchPane);
-        root.setOnKeyReleased(event -> {
+        HBox hRegexPane = new HBox(DEFAULT_BOX_SPACING, regexText, regexButton);
+        hRegexPane.setAlignment(Pos.CENTER);
+        VBox vRegexPane = new VBox(0.0, hRegexLabel, hRegexPane);
+
+        VBox vCenterContents = new VBox(DEFAULT_BOX_SPACING,
+                vRegexPane, vMatchPane);
+        vCenterContents.setAlignment(Pos.CENTER);
+        vCenterContents.setOnKeyReleased(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 System.exit(0);
             }
@@ -61,8 +79,22 @@ public class View {
             matchText.Format(matcher);
         });
 
-        Scene scene = new Scene(root, 1280, 720);
-        stage.setTitle("Hello!");
+        AnchorPane.setTopAnchor(vCenterContents, UI_PADDING);
+        AnchorPane.setBottomAnchor(vCenterContents, UI_PADDING);
+        AnchorPane.setLeftAnchor(vCenterContents, UI_PADDING);
+        AnchorPane.setRightAnchor(vCenterContents, UI_PADDING);
+        AnchorPane root = new AnchorPane(vCenterContents);
+        root.setId("root");
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        if (scene.getStylesheets().isEmpty()) {
+            String stylesheet = loadStylesheet();
+            if (stylesheet != null) {
+                scene.getStylesheets().add(stylesheet);
+            }
+        }
+
+        stage.setTitle("Regless");
         stage.setScene(scene);
         stage.show();
     }
