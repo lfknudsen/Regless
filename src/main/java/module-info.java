@@ -7,6 +7,7 @@ module com.falkknudsen.regless {
     requires javafx.graphics;
     requires javafx.web;
     requires org.jsoup;
+    requires org.jspecify;
 
     exports com.falkknudsen.regless;
 }
