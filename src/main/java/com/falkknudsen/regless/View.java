@@ -26,8 +26,10 @@ public class View {
     public final static double UI_PADDING = 9.0;
     public final static float DEFAULT_BOX_SPACING = 10f;
 
-    public final static double WINDOW_WIDTH = 800;
-    public final static double WINDOW_HEIGHT = 800;
+    // This default works well for 1080p screens.
+    // TODO: Find more scalable (heh) solution.
+    public final static double WINDOW_WIDTH = 775;
+    public final static double WINDOW_HEIGHT = 417;
 
     public View(Stage stage, Model model) {
         this.stage = stage;
@@ -43,19 +45,23 @@ public class View {
         hMatchLabel.setAlignment(Pos.BOTTOM_LEFT);
 
         Editor matchText = new Editor();
-        matchText.setPrefHeight(UI_PADDING * 15);
+        //matchText.setPrefHeight(UI_PADDING * 30);
+        matchText.setMinHeight(UI_PADDING * 30);
+        matchText.setMinWidth(UI_PADDING * 50);
+
 
         Editor regexText = new Editor();
-        regexText.setPrefHeight(UI_PADDING * 10);
+        regexText.setMinHeight(UI_PADDING * 10);
         Button regexButton = new Button("Match");
         regexButton.setOnAction(e -> {
             UpdatePattern(regexText.GetText());
             UpdateMatcher(matchText.GetText());
             matchText.Format(matcher);
         });
+        regexButton.setMinWidth(UI_PADDING * 10);
 
-        regexText.setPrefWidth(WINDOW_WIDTH / 2 - UI_PADDING * 2);
-        matchText.setPrefWidth(regexText.getPrefWidth() + regexButton.getPrefWidth() + DEFAULT_BOX_SPACING);
+        //regexText.setPrefWidth(WINDOW_WIDTH / 2 - UI_PADDING * 2);
+        //matchText.setPrefWidth(regexText.getPrefWidth() + regexButton.getPrefWidth() + DEFAULT_BOX_SPACING);
         StackPane matchPane = new StackPane();
         matchPane.setAlignment(Pos.CENTER);
         matchPane.getChildren().addAll(matchText);
