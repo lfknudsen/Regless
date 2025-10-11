@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -35,6 +36,9 @@ public class View {
         this.stage = stage;
         this.model = model;
 
+        TextArea textArea = new TextArea();
+        textArea.setMinHeight(UI_PADDING * 30);
+
         Label regexLabel = new Label("Regular Expression:");
         regexLabel.setVisible(true);
         HBox hRegexLabel = new HBox(regexLabel);
@@ -45,34 +49,25 @@ public class View {
         hMatchLabel.setAlignment(Pos.BOTTOM_LEFT);
 
         Editor matchText = new Editor();
-        //matchText.setPrefHeight(UI_PADDING * 30);
         matchText.setMinHeight(UI_PADDING * 30);
         matchText.setMinWidth(UI_PADDING * 50);
-
 
         Editor regexText = new Editor();
         regexText.setMinHeight(UI_PADDING * 10);
         Button regexButton = new Button("Match");
-        regexButton.setOnAction(e -> {
-            UpdatePattern(regexText.GetText());
-            UpdateMatcher(matchText.GetText());
-            matchText.Format(matcher);
-        });
         regexButton.setMinWidth(UI_PADDING * 10);
 
         //regexText.setPrefWidth(WINDOW_WIDTH / 2 - UI_PADDING * 2);
         //matchText.setPrefWidth(regexText.getPrefWidth() + regexButton.getPrefWidth() + DEFAULT_BOX_SPACING);
-        StackPane matchPane = new StackPane();
+        RichEditor matchPane = new RichEditor(textArea, matchText);
         matchPane.setAlignment(Pos.CENTER);
-        matchPane.getChildren().addAll(matchText);
         VBox vMatchPane = new VBox(0.0, hMatchLabel, matchPane);
 
         HBox hRegexPane = new HBox(DEFAULT_BOX_SPACING, regexText, regexButton);
         hRegexPane.setAlignment(Pos.CENTER);
         VBox vRegexPane = new VBox(0.0, hRegexLabel, hRegexPane);
 
-        VBox vCenterContents = new VBox(DEFAULT_BOX_SPACING,
-                vRegexPane, vMatchPane);
+        VBox vCenterContents = new VBox(DEFAULT_BOX_SPACING, vRegexPane, vMatchPane);
         vCenterContents.setAlignment(Pos.CENTER);
         vCenterContents.setOnKeyReleased(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
@@ -80,9 +75,19 @@ public class View {
             }
         });
         regexText.setOnKeyReleased(_ -> {
-            UpdatePattern(regexText.GetText());
-            UpdateMatcher(matchText.GetText());
-            matchText.Format(matcher);
+            UpdatePattern(regexText.getText());
+            UpdateMatcher(matchPane.getText());
+            matchPane.format(matcher);
+        });
+        matchText.setOnKeyPressed(k -> {
+            if (k.getCode() == KeyCode.TAB) {
+                textArea.appendText("More text?!?!");
+            }
+        });
+        regexButton.setOnAction(e -> {
+            UpdatePattern(regexText.getText());
+            UpdateMatcher(matchPane.getText());
+            matchPane.format(matcher);
         });
 
         AnchorPane.setTopAnchor(vCenterContents, UI_PADDING);
@@ -107,13 +112,13 @@ public class View {
 
     @NullMarked
     private void UpdatePattern(String regex) {
-        regex = "(?:" + regex + ")";
+        //regex = "(?:" + regex + ")";
         try {
             pattern = Pattern.compile(regex);
             System.out.println("Valid regular expression: " + regex);
         } catch (PatternSyntaxException e) {
             System.err.println("Invalid regular expression: " + regex);
-            pattern = Pattern.compile("(?:)");
+            pattern = Pattern.compile("");//("(?:)");
         }
     }
 

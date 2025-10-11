@@ -40,6 +40,7 @@ public class Editor extends HTMLEditor {
         if (matcher == null || !matcher.find() || matcher.pattern().toString().isEmpty()) {
             return;
         }
+        System.out.println("Before: \n" + text);
         sb.delete(0, sb.length())
             .append(Preamble);
         var currentIdx = 0;
@@ -47,33 +48,45 @@ public class Editor extends HTMLEditor {
             var leftIdx = matcher.start();
             var rightIdx = matcher.end();
             if (leftIdx > currentIdx) {
+                String str = text.substring(currentIdx, leftIdx)
+                        .replaceAll("[^\n]", "&nbsp;")
+                        .replaceAll("\n", "<br/>");
+
                 sb.append("<span>")
-                    .append(text, currentIdx, leftIdx)
+                    .append(str)
                     .append("</span>");
             }
 
-            int group = GetGroup(matcher, leftIdx, rightIdx);
+            int group = getGroup(matcher, leftIdx, rightIdx);
             System.out.println("Group nr: " + group);
             String colour = nonCaptureColour;
             if (group > 0) {
                 colour = BackgroundColours[group % BackgroundColours.length];
             }
+            String str = text.substring(leftIdx, rightIdx)
+                    .replaceAll("[^\n]", "&nbsp;")
+                    .replaceAll("\n", "<br/>");
+
             sb.append("<span style=\"background-color:")
                 .append(colour)
                 .append(";\">")
-                .append(text, leftIdx, rightIdx)
+                .append(str)
                 .append("</span>");
             currentIdx = rightIdx;
         } while (matcher.find());
 
         if (currentIdx < text.length()) {
+            String str = text.substring(currentIdx, text.length())
+                    .replaceAll("[^\n]", "&nbsp;")
+                    .replaceAll("\n", "<br/>");
+
             sb.append("<span>")
-                .append(text, currentIdx, text.length())
+                .append(str)
                 .append("</span>");
         }
-        sb.append("<span></span>")
-            .append(Postamble);
+        sb.append(Postamble);
         setHtmlText(sb.toString());
+        System.out.println("After: \n" + sb.toString());
     }
 
     /// Prefix to the contents of the HTMLEditor
@@ -82,9 +95,9 @@ public class Editor extends HTMLEditor {
             "<head>" +
                 "<style>" +
                     // Typeface set to one that is monospace.
-                    "body {font-family:Consolas;}" +
+                    "body {font-family:Consolas;font-size:16px;}" +
                     // Still have display:block, for smoother newline behaviour
-                    "p {margin-top:0;margin-bottom:0;}" +
+                    "p {display:inline;margin-top:0;margin-bottom:0;}" +
                 "</style>" +
             "</head>" +
             // Has to be set to true every time in order for editor to continue being editable.
