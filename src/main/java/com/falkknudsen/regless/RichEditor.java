@@ -5,17 +5,16 @@ import javafx.scene.layout.StackPane;
 
 import java.util.regex.Matcher;
 
+/** A wrapper and StackPane for a TextArea and HTMLEditor.
+ The TextArea is laid out in front of the HTMLEditor. */
 public class RichEditor extends StackPane {
     TextArea front;
     Editor back;
-
-    StringBuilder sb = new StringBuilder(1000);
 
     public RichEditor(TextArea front, Editor back) {
         this.front = front;
         this.back = back;
         getChildren().addAll(back, front);
-        sb.repeat(' ', 1000);
     }
 
     public String getText() {
@@ -23,6 +22,6 @@ public class RichEditor extends StackPane {
     }
 
     public void format(Matcher matcher) {
-        back.format(matcher, front.getText());
+        back.format(matcher, front.getText().toCharArray());
     }
 }
