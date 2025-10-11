@@ -57,8 +57,6 @@ public class View {
         Button regexButton = new Button("Match");
         regexButton.setMinWidth(UI_PADDING * 10);
 
-        //regexText.setPrefWidth(WINDOW_WIDTH / 2 - UI_PADDING * 2);
-        //matchText.setPrefWidth(regexText.getPrefWidth() + regexButton.getPrefWidth() + DEFAULT_BOX_SPACING);
         RichEditor matchPane = new RichEditor(textArea, matchText);
         matchPane.setAlignment(Pos.CENTER);
         VBox vMatchPane = new VBox(0.0, hMatchLabel, matchPane);

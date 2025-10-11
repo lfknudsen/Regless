@@ -21,17 +21,29 @@
 }
 
 .html-editor {
-    -fx-padding: 5;
     -fx-background-color: #00000000;
     -fx-border-color: #CFCFCF;
     -fx-border-radius: 10px / 20px;
     -fx-background-radius: 10px / 20px;
     -fx-font-family: Consolas;
     -fx-text-fill: #333333;
-    -fx-font-size: 12;
+    -fx-font-size: 16px;
     -fx-font-scale: 100;
+    -fx-bounds-type: logical-vertical-center;
 }
 
+.text-area {
+    -fx-background-color: #00000000;
+    -fx-border-color: #00000000;
+    -fx-border-radius: 10px / 20px;
+    -fx-background-radius: 10px / 20px;
+    -fx-font-family: Consolas;
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+    -fx-font-scale: 1;
+    -fx-tab-size: 4;
+    -fx-bounds-type: logical-vertical-center;
+}
 .html-editor:hover {
     -fx-border-color: pink;
     -fx-effect: dropshadow(two-pass-box, pink, 2.25, 0.5, 0, 0);
@@ -51,21 +63,13 @@
     -fx-font-family: Cambria;
 }
 
-.text-area {
-    -fx-background-color: #00000000;
-    -fx-border-color: #00000000;
-    -fx-border-radius: 10px / 20px;
-    -fx-background-radius: 10px / 20px;
-    -fx-padding: 5;
-    -fx-font-family: Consolas;
-    -fx-font-size: 16;
-    -fx-text-fill: #000000;
-    -fx-font-scale: 100;
-    -fx-font-smoothing-type: gray;
-}
-
 .text-area .content {
+    -fx-padding: 9px 8px 9px 8px;
     -fx-background-color: #00000000;
+    -fx-font-size:16px;
+    -fx-tab-size: 4;
+    -fx-font-scale: 1;
+    -fx-bounds-type: logical-vertical-center;
 }
 
 .text-area .viewport {

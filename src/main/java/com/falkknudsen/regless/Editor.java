@@ -11,8 +11,6 @@ import java.util.regex.Matcher;
 public class Editor extends HTMLEditor {
     /// Cached string builder.
     private final StringBuilder sb = new StringBuilder(1000);
-    /// Cached plaintext version of editor contents.
-    private String text = "";
 
     /// The constructor removes the HTMLEditor's toolbars, and sets the contents
     /// to have the right style.
@@ -29,8 +27,7 @@ public class Editor extends HTMLEditor {
     /// Returns the contents of the editor stripped of all tags.
     public String getText() {
         String html = getHtmlText();
-        text = Jsoup.parse(html).text();
-        return text;
+        return Jsoup.parse(html).text();
     }
 
     /** Formats the editor's underlying HTML text so that the background of text
@@ -49,8 +46,9 @@ public class Editor extends HTMLEditor {
             var rightIdx = matcher.end();
             if (leftIdx > currentIdx) {
                 String str = text.substring(currentIdx, leftIdx)
-                        .replaceAll("[^\n]", "&nbsp;")
-                        .replaceAll("\n", "<br/>");
+                    .replaceAll("[^\n\t]", "&nbsp;")
+                    .replaceAll("[\t]", "&nbsp;&nbsp;&nbsp;&nbsp;")
+                    .replaceAll("\n", "<br/>");
 
                 sb.append("<span>")
                     .append(str)
@@ -64,8 +62,9 @@ public class Editor extends HTMLEditor {
                 colour = BackgroundColours[group % BackgroundColours.length];
             }
             String str = text.substring(leftIdx, rightIdx)
-                    .replaceAll("[^\n]", "&nbsp;")
-                    .replaceAll("\n", "<br/>");
+                .replaceAll("[^\n\t]", "&nbsp;")
+                .replaceAll("[\t]", "&nbsp;&nbsp;&nbsp;&nbsp;")
+                .replaceAll("\n", "<br/>");
 
             sb.append("<span style=\"background-color:")
                 .append(colour)
@@ -76,9 +75,10 @@ public class Editor extends HTMLEditor {
         } while (matcher.find());
 
         if (currentIdx < text.length()) {
-            String str = text.substring(currentIdx, text.length())
-                    .replaceAll("[^\n]", "&nbsp;")
-                    .replaceAll("\n", "<br/>");
+            String str = text.substring(currentIdx)
+                .replaceAll("[^\n\t]", "&nbsp;")
+                .replaceAll("[\t]", "&nbsp;&nbsp;&nbsp;&nbsp;")
+                .replaceAll("\n", "<br/>");
 
             sb.append("<span>")
                 .append(str)
@@ -95,8 +95,9 @@ public class Editor extends HTMLEditor {
             "<head>" +
                 "<style>" +
                     // Typeface set to one that is monospace.
-                    "body {font-family:Consolas;font-size:16px;}" +
-                    // Still have display:block, for smoother newline behaviour
+                    // This line height matches text-area's at this font size.
+                    "body {font-family:Consolas;font-size:16px;font-scale:1;line-height:21px;}" +
+                    // Erasing the three rules which define a default <p>
                     "p {display:inline;margin-top:0;margin-bottom:0;}" +
                 "</style>" +
             "</head>" +
