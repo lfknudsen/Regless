@@ -17,10 +17,10 @@ import static com.falkknudsen.regless.View.VERBOSE;
  @see HTMLEditor
  @author Louis Falk Knudsen */
 public class Editor extends HTMLEditor {
-    /// Cached string builder.
-    private final StringBuilder sb = new StringBuilder(1000);
     /// Cached string builder for formatting text as HTML.
     private final StringBuilder _sb = new StringBuilder(1000);
+    /// Cached HTML parser.
+    private final Parser _parser = new Parser(new HtmlTreeBuilder());
 
     /** The constructor removes the HTMLEditor's toolbars, and sets the contents to have the right
     style. */
@@ -35,8 +35,7 @@ public class Editor extends HTMLEditor {
 
     /// Returns the contents of the editor stripped of all tags.
     public String getText() {
-        String html = getHtmlText();
-        return Jsoup.parse(html).text();
+        return _parser.parseInput(getHtmlText(), "").text();
     }
 
     /**
