@@ -21,6 +21,8 @@ public class View {
     private Stage stage;
     private Model model;
 
+    public final static boolean VERBOSE = false;
+
     private Pattern pattern;
     private Matcher matcher;
 
@@ -77,11 +79,6 @@ public class View {
             UpdateMatcher(matchPane.getText());
             matchPane.format(matcher);
         });
-        matchText.setOnKeyPressed(k -> {
-            if (k.getCode() == KeyCode.TAB) {
-                textArea.appendText("More text?!?!");
-            }
-        });
         regexButton.setOnAction(e -> {
             UpdatePattern(regexText.getText());
             UpdateMatcher(matchPane.getText());
@@ -124,8 +121,8 @@ public class View {
     private void UpdateMatcher(String match) {
         if (pattern == null) {
             matcher = null;
-            return;
+        } else {
+            matcher = pattern.matcher(match);
         }
-        matcher = pattern.matcher(match);
     }
 }

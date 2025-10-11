@@ -8,6 +8,13 @@ import org.jspecify.annotations.Nullable;
 import java.util.Set;
 import java.util.regex.Matcher;
 
+import static com.falkknudsen.regless.View.VERBOSE;
+
+/** An {@linkplain HTMLEditor} with a few extensions to parse and format its contents.<br/>
+ Constants related to HTML formatting are located at the bottom of the file.<br/>
+ Uses the {@linkplain org.jsoup.Jsoup} library for simple HTML parsing.
+ @see HTMLEditor
+ @author Louis Falk Knudsen */
 public class Editor extends HTMLEditor {
     /// Cached string builder.
     private final StringBuilder sb = new StringBuilder(1000);
@@ -56,8 +63,8 @@ public class Editor extends HTMLEditor {
             }
 
             int group = getGroup(matcher, leftIdx, rightIdx);
-            System.out.println("Group nr: " + group);
             String colour = nonCaptureColour;
+            if (VERBOSE) System.out.println("Group nr: " + group);
             if (group > 0) {
                 colour = BackgroundColours[group % BackgroundColours.length];
             }
@@ -86,7 +93,7 @@ public class Editor extends HTMLEditor {
         }
         sb.append(Postamble);
         setHtmlText(sb.toString());
-        System.out.println("After: \n" + sb.toString());
+        if (VERBOSE) System.out.println("After: \n" + _sb);
     }
 
     /// Prefix to the contents of the HTMLEditor
