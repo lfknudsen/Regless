@@ -27,7 +27,7 @@ public class Editor extends HTMLEditor {
     }
 
     /// Returns the contents of the editor stripped of all tags.
-    public String GetText() {
+    public String getText() {
         String html = getHtmlText();
         text = Jsoup.parse(html).text();
         return text;
@@ -36,8 +36,8 @@ public class Editor extends HTMLEditor {
     /** Formats the editor's underlying HTML text so that the background of text
      that has been matched by a named subgroup is coloured. Different named
      subgroups have different colours. */
-    public void Format(@Nullable Matcher matcher) {
-        if (matcher == null || !matcher.find()) {
+    public void format(@Nullable Matcher matcher, String text) {
+        if (matcher == null || !matcher.find() || matcher.pattern().toString().isEmpty()) {
             return;
         }
         sb.delete(0, sb.length())
@@ -109,7 +109,7 @@ public class Editor extends HTMLEditor {
      @param matcher The Matcher which found the match.
      @param start The value of matcher.start()
      @param end The value of matcher.end() */
-    private static int GetGroup(Matcher matcher, int start, int end) {
+    private static int getGroup(Matcher matcher, int start, int end) {
         int groupCount = matcher.groupCount();
         for (int i = 1; i < groupCount; i++) {
             if (matcher.start(i) == start && matcher.end(i) == end) {
@@ -123,7 +123,7 @@ public class Editor extends HTMLEditor {
      recently.<br/>
      Will <b>not</b> fail fast if {@link Matcher#hasMatch matcher.hasMatch()} is false.
      @param matcher The Matcher which found the match. */
-    private static int GetGroup(Matcher matcher) {
-        return GetGroup(matcher, matcher.start(), matcher.end());
+    private static int getGroup(Matcher matcher) {
+        return getGroup(matcher, matcher.start(), matcher.end());
     }
 }

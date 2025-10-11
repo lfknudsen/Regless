@@ -23,8 +23,8 @@ public class View {
     private Pattern pattern;
     private Matcher matcher;
 
-    public final static double UI_PADDING = 9.0;
-    public final static float DEFAULT_BOX_SPACING = 10f;
+    public final static double UI_PADDING = 9.0; // Used as Double sometimes, therefore not float
+    public final static float DEFAULT_BOX_SPACING = 10.0f;
 
     // This default works well for 1080p screens.
     // TODO: Find more scalable (heh) solution.
