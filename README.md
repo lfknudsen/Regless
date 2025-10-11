@@ -2,5 +2,4 @@
 
 Visual tool for assisting in writing and understanding regular expressions.
 
-<img width="777" height="449" alt="image" src="https://github.com/user-attachments/assets/c4aa06de-eff2-41bc-bc63-9b4fce2b9332" />
-
+<img width="777" height="449" alt="image" src="https://github.com/user-attachments/assets/0c5546f8-2447-47d2-9b3c-ed3530236e5e" />
