@@ -43,8 +43,10 @@ public class Editor extends HTMLEditor {
      by a named subgroup is coloured. Different named subgroups have different colours.
      */
     public void format(@Nullable Matcher matcher, char[] text) {
-        if (matcher == null || !matcher.find() || text.length == 0
-            // this is cached, so it's just a few of function calls:
+        if (matcher == null
+            || !matcher.find()
+            || text.length == 0
+            // this is cached, so it's just a few function calls:
             || matcher.pattern().toString().isEmpty()) {
             setHtmlText(EmptyHTMLBody);
             return;
