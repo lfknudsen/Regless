@@ -6,7 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.NullUnmarked;
@@ -110,9 +112,9 @@ public class View {
         //regex = "(?:" + regex + ")";
         try {
             pattern = Pattern.compile(regex);
-            System.out.println("Valid regular expression: " + regex);
+            if (VERBOSE) System.out.println("Valid regular expression: " + regex);
         } catch (PatternSyntaxException e) {
-            System.err.println("Invalid regular expression: " + regex);
+            if (VERBOSE) System.err.println("Invalid regular expression: " + regex);
             pattern = Pattern.compile("");//("(?:)");
         }
     }
