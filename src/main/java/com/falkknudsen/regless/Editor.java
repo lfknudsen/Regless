@@ -118,7 +118,7 @@ public class Editor extends HTMLEditor {
      */
     private static int getGroup(Matcher matcher, int start, int end) {
         int groupCount = matcher.groupCount();
-        for (int i = 1; i < groupCount; i++) {
+        for (int i = 1; i <= groupCount; i++) {
             if (matcher.start(i) == start && matcher.end(i) == end) {
                 return i;
             }
