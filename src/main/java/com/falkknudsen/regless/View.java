@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -17,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import static com.falkknudsen.regless.ResourceLoader.loadAppIcon;
 import static com.falkknudsen.regless.ResourceLoader.loadStylesheet;
 
 public class View {
@@ -102,6 +104,10 @@ public class View {
             }
         }
 
+        var iconPath = loadAppIcon();
+        if (iconPath != null) {
+            stage.getIcons().add(new Image(iconPath));
+        }
         stage.setTitle("Regless");
         stage.setScene(scene);
         stage.show();
