@@ -44,6 +44,7 @@ public class View {
 
         TextArea textArea = new TextArea();
         textArea.setMinHeight(UI_PADDING * 30);
+        textArea.setPromptText("Enter your test string here...");
 
         Label regexLabel = new Label("Regular Expression:");
         regexLabel.setVisible(true);
