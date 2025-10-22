@@ -42,34 +42,12 @@ public class View {
         this.stage = stage;
         this.model = model;
 
-        TextArea textArea = new TextArea();
-        textArea.setMinHeight(UI_PADDING * 30);
-        textArea.setPromptText("Enter your test string here...");
+        HBox hMatchLabel = createLabelBox("Test String:");
+        RichEditor TestStringEditor = createTestEditor();
+        var vMatchPane = new VBox(0.0, hMatchLabel, TestStringEditor);
 
-        Label regexLabel = new Label("Regular Expression:");
-        regexLabel.setVisible(true);
-        HBox hRegexLabel = new HBox(regexLabel);
-        hRegexLabel.setAlignment(Pos.BOTTOM_LEFT);
-        Label matchLabel = new Label("Test String:");
-        matchLabel.setVisible(true);
-        HBox hMatchLabel = new HBox(matchLabel);
-        hMatchLabel.setAlignment(Pos.BOTTOM_LEFT);
-
-        Editor matchText = new Editor();
-        matchText.setMinHeight(UI_PADDING * 30);
-        matchText.setMinWidth(UI_PADDING * 50);
-
-        Editor regexText = new Editor();
-        regexText.setMinHeight(UI_PADDING * 10);
-        Button regexButton = new Button("Match");
-        regexButton.setMinWidth(UI_PADDING * 10);
-
-        RichEditor matchPane = new RichEditor(textArea, matchText);
-        matchPane.setAlignment(Pos.CENTER);
-        VBox vMatchPane = new VBox(0.0, hMatchLabel, matchPane);
-
-        HBox hRegexPane = new HBox(DEFAULT_BOX_SPACING, regexText, regexButton);
-        hRegexPane.setAlignment(Pos.CENTER);
+        HBox hRegexLabel = createLabelBox("Regular Expression:");
+        HBox hRegexPane = createRegexEditor(TestStringEditor);
         VBox vRegexPane = new VBox(0.0, hRegexLabel, hRegexPane);
 
         VBox vCenterContents = new VBox(DEFAULT_BOX_SPACING, vRegexPane, vMatchPane);
@@ -78,16 +56,6 @@ public class View {
             if (event.getCode() == KeyCode.ESCAPE) {
                 System.exit(0);
             }
-        });
-        regexText.setOnKeyReleased(_ -> {
-            UpdatePattern(regexText.getText());
-            UpdateMatcher(matchPane.getText());
-            matchPane.format(matcher);
-        });
-        regexButton.setOnAction(e -> {
-            UpdatePattern(regexText.getText());
-            UpdateMatcher(matchPane.getText());
-            matchPane.format(matcher);
         });
 
         AnchorPane.setTopAnchor(vCenterContents, UI_PADDING);
@@ -133,5 +101,50 @@ public class View {
         } else {
             matcher = pattern.matcher(match);
         }
+    }
+
+    private RichEditor createTestEditor() {
+
+        Editor matchText = new Editor();
+        matchText.setMinHeight(UI_PADDING * 30);
+        matchText.setMinWidth(UI_PADDING * 50);
+
+        TextArea testString = new TextArea();
+        testString.setMinHeight(UI_PADDING * 30);
+        testString.setPromptText("Enter your test string here...");
+
+        RichEditor matchPane = new RichEditor(testString, matchText);
+        matchPane.setAlignment(Pos.CENTER);
+        return matchPane;
+    }
+
+    private HBox createRegexEditor(RichEditor TestStringEditor) {
+        Editor regexText = new Editor();
+        regexText.setMinHeight(UI_PADDING * 10);
+        Button regexButton = new Button("Match");
+        regexButton.setMinWidth(UI_PADDING * 10);
+        HBox hRegexPane = new HBox(DEFAULT_BOX_SPACING, regexText, regexButton);
+        hRegexPane.setAlignment(Pos.CENTER);
+
+        regexText.setOnKeyReleased(_ -> {
+            UpdatePattern(regexText.getText());
+            UpdateMatcher(TestStringEditor.getText());
+            TestStringEditor.format(matcher);
+        });
+        regexButton.setOnAction(e -> {
+            UpdatePattern(regexText.getText());
+            UpdateMatcher(TestStringEditor.getText());
+            TestStringEditor.format(matcher);
+        });
+
+        return hRegexPane;
+    }
+
+    private static HBox createLabelBox(String text) {
+        Label matchLabel = new Label(text);
+        matchLabel.setVisible(true);
+        HBox hMatchLabel = new HBox(matchLabel);
+        hMatchLabel.setAlignment(Pos.BOTTOM_LEFT);
+        return hMatchLabel;
     }
 }
