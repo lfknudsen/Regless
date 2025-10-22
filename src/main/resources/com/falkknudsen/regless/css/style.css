@@ -25,7 +25,7 @@
     -fx-border-color: #CFCFCF;
     -fx-border-radius: 10px / 20px;
     -fx-background-radius: 10px / 20px;
-    -fx-font-family: Consolas;
+    -fx-font-family: Monospaced;
     -fx-text-fill: #333333;
     -fx-font-size: 16px;
     -fx-font-scale: 100;
@@ -37,7 +37,7 @@
     -fx-border-color: #00000000;
     -fx-border-radius: 10px / 20px;
     -fx-background-radius: 10px / 20px;
-    -fx-font-family: Consolas;
+    -fx-font-family: Monospaced;
     -fx-font-size: 16px;
     -fx-text-fill: #333333;
     -fx-font-scale: 1;

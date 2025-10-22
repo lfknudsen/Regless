@@ -154,7 +154,7 @@ public class Editor extends HTMLEditor {
             "<style>" +
             // Typeface set to one that is monospace.
             // This line height matches text-area's at this font size.
-            "body{font-family:Consolas;font-size:16px;font-scale:1;line-height:21px;}" +
+            "body{font-family:Monospaced;font-size:16px;font-scale:1;line-height:21px;}" +
             // Erasing the three rules which define a default <p>
             "p{display:inline;margin-top:0;margin-bottom:0;}" +
             "</style>" +
@@ -180,6 +180,8 @@ public class Editor extends HTMLEditor {
     private static final String nonCaptureColourSpan =
             SPAN_WITH_COLOUR_START + nonCaptureColour + SPAN_WITH_COLOUR_END;
 
+    // Computing the entire opening span tags up front to reduce amount of string
+    // concatenation at run-time.
     static {
         for (int i = 0; i < BackgroundColours.length; i++) {
             ColourSpans[i] = SPAN_WITH_COLOUR_START + BackgroundColours[i] + SPAN_WITH_COLOUR_END;
