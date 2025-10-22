@@ -46,14 +46,14 @@ public class View {
         this.stage = stage;
         this.model = model;
 
-        HBox hMatchLabel = createLabelBox("Test String:");
-        testStringEditor = createTestEditor();
-        var vMatchPane = new VBox(0.0, hMatchLabel, testStringEditor);
-
         HBox hRegexLabel = createLabelBox("Regular Expression:");
         regexEditor = createRegexEditor();
         HBox hRegexPane = createRegexEditorPane();
         VBox vRegexPane = new VBox(0.0, hRegexLabel, hRegexPane);
+
+        HBox hMatchLabel = createLabelBox("Test String:");
+        testStringEditor = createTestEditor();
+        var vMatchPane = new VBox(0.0, hMatchLabel, testStringEditor);
 
         VBox vCenterContents = new VBox(DEFAULT_BOX_SPACING, vRegexPane, vMatchPane);
         vCenterContents.setAlignment(Pos.CENTER);
