@@ -117,6 +117,7 @@ public class View {
         text.setMinHeight(UI_PADDING * 30);
         text.setMinWidth(UI_PADDING * 50);
         text.setPromptText("Enter your test string here...");
+        text.setOnKeyReleased(this::updateHighlighting);
 
         RichEditor matchEditor = new RichEditor(text, highlighting);
         matchEditor.setAlignment(Pos.CENTER);
