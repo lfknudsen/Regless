@@ -1,5 +1,6 @@
 package com.falkknudsen.regless;
 
+import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -38,16 +39,22 @@ public class View {
     public final static double WINDOW_WIDTH = 775;
     public final static double WINDOW_HEIGHT = 417;
 
+    private final Editor regexEditor;
+    private final RichEditor testStringEditor;
+
     public View(Stage stage, Model model) {
         this.stage = stage;
         this.model = model;
 
         HBox hMatchLabel = createLabelBox("Test String:");
-        RichEditor TestStringEditor = createTestEditor();
-        var vMatchPane = new VBox(0.0, hMatchLabel, TestStringEditor);
+        testStringEditor = createTestEditor();
+        var vMatchPane = new VBox(0.0, hMatchLabel, testStringEditor);
 
         HBox hRegexLabel = createLabelBox("Regular Expression:");
-        HBox hRegexPane = createRegexEditor(TestStringEditor);
+        regexEditor = new Editor();
+        regexEditor.setMinHeight(UI_PADDING * 10);
+        regexEditor.setOnKeyReleased(this::updateHighlighting);
+        HBox hRegexPane = createRegexEditorPane();
         VBox vRegexPane = new VBox(0.0, hRegexLabel, hRegexPane);
 
         VBox vCenterContents = new VBox(DEFAULT_BOX_SPACING, vRegexPane, vMatchPane);
@@ -104,7 +111,6 @@ public class View {
     }
 
     private RichEditor createTestEditor() {
-
         Editor matchText = new Editor();
         matchText.setMinHeight(UI_PADDING * 30);
         matchText.setMinWidth(UI_PADDING * 50);
@@ -118,26 +124,20 @@ public class View {
         return matchPane;
     }
 
-    private HBox createRegexEditor(RichEditor TestStringEditor) {
-        Editor regexText = new Editor();
-        regexText.setMinHeight(UI_PADDING * 10);
+    private HBox createRegexEditorPane() {
         Button regexButton = new Button("Match");
         regexButton.setMinWidth(UI_PADDING * 10);
-        HBox hRegexPane = new HBox(DEFAULT_BOX_SPACING, regexText, regexButton);
+        HBox hRegexPane = new HBox(DEFAULT_BOX_SPACING, regexEditor, regexButton);
         hRegexPane.setAlignment(Pos.CENTER);
-
-        regexText.setOnKeyReleased(_ -> {
-            UpdatePattern(regexText.getText());
-            UpdateMatcher(TestStringEditor.getText());
-            TestStringEditor.format(matcher);
-        });
-        regexButton.setOnAction(e -> {
-            UpdatePattern(regexText.getText());
-            UpdateMatcher(TestStringEditor.getText());
-            TestStringEditor.format(matcher);
-        });
+        regexButton.setOnAction(this::updateHighlighting);
 
         return hRegexPane;
+    }
+
+    private void updateHighlighting(Event e) {
+        UpdatePattern(regexEditor.getText());
+        UpdateMatcher(testStringEditor.getText());
+        testStringEditor.format(matcher);
     }
 
     private static HBox createLabelBox(String text) {
