@@ -39,7 +39,7 @@ public class View {
     public final static double WINDOW_WIDTH = 775;
     public final static double WINDOW_HEIGHT = 417;
 
-    private final Editor regexEditor;
+    private final RichEditor regexEditor;
     private final RichEditor testStringEditor;
 
     public View(Stage stage, Model model) {
@@ -109,24 +109,32 @@ public class View {
     }
 
     private RichEditor createTestEditor() {
-        Editor matchText = new Editor();
-        matchText.setMinHeight(UI_PADDING * 30);
-        matchText.setMinWidth(UI_PADDING * 50);
+        Editor highlighting = new Editor();
+        highlighting.setMinHeight(UI_PADDING * 30);
+        highlighting.setMinWidth(UI_PADDING * 50);
 
-        TextArea testString = new TextArea();
-        testString.setMinHeight(UI_PADDING * 30);
-        testString.setPromptText("Enter your test string here...");
+        TextArea text = new TextArea();
+        text.setMinHeight(UI_PADDING * 30);
+        text.setMinWidth(UI_PADDING * 50);
+        text.setPromptText("Enter your test string here...");
 
-        RichEditor matchPane = new RichEditor(testString, matchText);
-        matchPane.setAlignment(Pos.CENTER);
-        return matchPane;
+        RichEditor matchEditor = new RichEditor(text, highlighting);
+        matchEditor.setAlignment(Pos.CENTER);
+        return matchEditor;
     }
 
-    private Editor createRegexEditor() {
-        Editor editor = new Editor();
-        editor.setMinHeight(UI_PADDING * 10);
-        editor.setOnKeyReleased(this::updateHighlighting);
-        return editor;
+    private RichEditor createRegexEditor() {
+        Editor highlighting = new Editor();
+        highlighting.setMinHeight(UI_PADDING * 10);
+
+        TextArea text = new TextArea();
+        text.setMinHeight(UI_PADDING * 10);
+        text.setPromptText("Enter your regex here...");
+        text.setOnKeyReleased(this::updateHighlighting);
+
+        RichEditor regexEditor = new RichEditor(text, highlighting);
+        regexEditor.setAlignment(Pos.CENTER);
+        return regexEditor;
     }
 
     private HBox createRegexEditorPane() {
