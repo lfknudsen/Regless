@@ -22,8 +22,8 @@ public class Editor extends HTMLEditor {
     /// Cached HTML parser.
     private final Parser _parser = new Parser(new HtmlTreeBuilder());
 
-    /** The constructor removes the HTMLEditor's toolbars, and sets the contents to have the right
-    style. */
+    /** The constructor removes the HTMLEditor's toolbars, and sets the contents
+     to have the right style. */
     public Editor() {
         Set<Node> nodes = this.lookupAll(".tool-bar");
         for (Node node : nodes) {
@@ -46,7 +46,7 @@ public class Editor extends HTMLEditor {
         if (matcher == null
             || !matcher.find()
             || text.length == 0
-            // this is cached, so it's just a few function calls:
+            // this is cached, so it's "just" a few function calls:
             || matcher.pattern().toString().isEmpty()) {
             setHtmlText(EmptyHTMLBody);
             return;

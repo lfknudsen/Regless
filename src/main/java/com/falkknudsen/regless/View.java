@@ -51,9 +51,7 @@ public class View {
         var vMatchPane = new VBox(0.0, hMatchLabel, testStringEditor);
 
         HBox hRegexLabel = createLabelBox("Regular Expression:");
-        regexEditor = new Editor();
-        regexEditor.setMinHeight(UI_PADDING * 10);
-        regexEditor.setOnKeyReleased(this::updateHighlighting);
+        regexEditor = createRegexEditor();
         HBox hRegexPane = createRegexEditorPane();
         VBox vRegexPane = new VBox(0.0, hRegexLabel, hRegexPane);
 
@@ -122,6 +120,13 @@ public class View {
         RichEditor matchPane = new RichEditor(testString, matchText);
         matchPane.setAlignment(Pos.CENTER);
         return matchPane;
+    }
+
+    private Editor createRegexEditor() {
+        Editor editor = new Editor();
+        editor.setMinHeight(UI_PADDING * 10);
+        editor.setOnKeyReleased(this::updateHighlighting);
+        return editor;
     }
 
     private HBox createRegexEditorPane() {
