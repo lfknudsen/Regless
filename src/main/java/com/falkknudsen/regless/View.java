@@ -28,9 +28,6 @@ public class View {
 
     public final static boolean VERBOSE = false;
 
-    private Pattern pattern;
-    private Matcher matcher;
-
     public final static double UI_PADDING = 9.0; // Used as Double sometimes, therefore not float
     public final static float DEFAULT_BOX_SPACING = 10.0f;
 
@@ -88,23 +85,20 @@ public class View {
     }
 
     @NullMarked
-    private void UpdatePattern(String regex) {
-        //regex = "(?:" + regex + ")";
+    private static Pattern UpdatePattern(String regex) {
         try {
-            pattern = Pattern.compile(regex);
-            if (VERBOSE) System.out.println("Valid regular expression: " + regex);
+            return Pattern.compile(regex);
         } catch (PatternSyntaxException e) {
-            if (VERBOSE) System.err.println("Invalid regular expression: " + regex);
-            pattern = Pattern.compile("");//("(?:)");
+            return Pattern.compile("");
         }
     }
 
     @NullUnmarked
-    private void UpdateMatcher(String match) {
+    private static Matcher UpdateMatcher(Pattern pattern, String match) {
         if (pattern == null) {
-            matcher = null;
+            return null;
         } else {
-            matcher = pattern.matcher(match);
+            return pattern.matcher(match);
         }
     }
 
@@ -149,8 +143,8 @@ public class View {
     }
 
     private void updateHighlighting(Event e) {
-        UpdatePattern(regexEditor.getText());
-        UpdateMatcher(testStringEditor.getText());
+        var pattern = UpdatePattern(regexEditor.getText());
+        var matcher = UpdateMatcher(pattern, testStringEditor.getText());
         testStringEditor.format(matcher);
     }
 
